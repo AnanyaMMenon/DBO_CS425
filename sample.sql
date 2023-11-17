@@ -12,7 +12,7 @@ create table
 
 -- Creating table ParkingLot
 create table
-    parking_lot (lot_id int, lot_name varchar(20), location varchar(50), total_spots int, available_spots int, emp_id int, primary key (lot_id), foreign key (emp_id) references employee (emp_id) on delete cascade );
+    parking_lot (lot_id int, lot_name varchar(20), location varchar(50), total_spots int, available_spots int, zip_code varchar(5), emp_id int, primary key (lot_id), foreign key (emp_id) references employee (emp_id) on delete cascade );
 
 -- Creating table parkingSpot
 create table
@@ -26,7 +26,8 @@ create table
         res_id int,
         cust_id int,
         spot_id int,
-        expire_time timestamp,
+		checkin_time timestamp,
+        checkout_time timestamp,      
         status varchar(20),
         primary key (res_id),
         foreign key (cust_id) references customer (cust_id) on delete cascade,
@@ -109,24 +110,25 @@ values
     (16, 'Stephanie', 'James', 'katherinecook@example.net', '8832830812', 'lisaturner', '!4T4jJpUFd');
 
 INSERT INTO
-    parking_lot (lot_id, lot_name, location, total_spots, available_spots, emp_id)
+    parking_lot (lot_id, lot_name, location, total_spots, available_spots, emp_id,zip_code)
 values
-    (1000, 'Edward Fernandez', '726 Peterson Wells', 100, 29, 4),
-    (1001, 'Tina Hall', '5433 Elizabeth Club', 29, 1, 7),
-    (1002, 'Brian Osborne', '799 David Ford Apt. 010', 18, 12, 8),
-    (1003, 'Michael Acevedo', '303 Robert Burgs Suite 903', 25, 5, 8),
-    (1004, 'Christina Graham', '425 Kim Vista', 110, 19, 4),
-    (1005, 'Carolyn Perry', '618 Roy Hill Suite 294', 23, 7, 1),
-    (1006, 'Perry Collier', '431 Davis Club', 100, 20, 2),
-    (1007, 'Oscar Sanders', '0333 Kennedy Street', 27, 3, 6),
-    (1008, 'Brian Hamilton', '06886 Samantha Neck Apt. 612', 15, 15, 2),
-    (1009, 'Rhonda Hill', '26283 Ashley River Suite 036', 130, 17, 3),
-    (1010, 'Mark Simmons', '39621 Karla Forest', 15, 15, 2),
-    (1011, 'Derek Davis DVM', '4276 Lauren Prairie Apt. 848', 26, 4, 5),
-    (1012, 'Kristina Mcdowell', '216 Dorsey Cove', 60, 24, 3),
-    (1013, 'Natasha Merritt', '2704 Hahn Islands', 70, 23, 4),
-    (1014, 'Adam Moore', '085 Adams Park Suite 021', 130, 17, 4),
-    (1015, 'Ashley Cardenas', '477 Gomez Shoal Suite 716', 25, 5, 6);
+    (1000, 'Art Institute', '1300 S DuSable Lk Shr Dr', 100, 29, 4,'60603'),
+    (1001, 'Adler Planetarium', '5433 Elizabeth Club', 29, 1, 7,'60616'),
+    (1002, 'McCormick Place', '2301 S King Dr', 18, 12, 8,'60616'),
+    (1003, 'Soldier Field', '1410 Museum Campus Dr', 25, 5, 8,'60605'),
+    (1004, 'Lincoln Park Zoo', '2001 N Clark St', 110, 19, 4,'60614'),
+    (1005, 'Water Tower Place', ' 835 North Michigan Avenue', 23, 7, 1,'60611'),
+    (1006, 'Shedd Aquarium', '1200 S Lake Shore D', 100, 20, 2,'60605'),
+    (1007, 'The Field Museum', '1400 S Lake Shore Dr', 27, 3, 6,'60605'),
+    (1008, 'Nordstrom', '55 E Grand Ave', 15, 15, 2,'60611'),
+    (1009, 'The Magnificent Mile', 'North Michigan Avenue', 130, 17, 3,'60611'),
+    (1010, 'Navy Pier', '600 E Grand Ave', 15, 15, 2,'60611'),
+    (1011, 'Jewel Osco', 'S King Drive', 26, 4, 5,'60616'),
+    (1012, 'Grant Park', '337 E Randolph St', 60, 24, 3,'60601'),
+    (1013, 'Millennium Park', '201 E Randolph St', 70, 23, 4,'60602'),
+    (1014, 'O\'Hare Airport', '10000 W OHare Ave', 130, 17, 4,'60666'),
+    (1015, 'Midway Airport', '5700 S Cicero Ave', 25, 5, 6,'60638');
+    
 
 insert into
     parking_spot (spot_id, lot_id, spot_type, status)
@@ -163,38 +165,38 @@ values
     (229, 1004, 'truck', 'available');
 
 insert into
-    reservation (res_id, cust_id, spot_id, expire_time, status)
+    reservation (res_id, cust_id, spot_id, checkin_time , checkout_time , status)
 values
-    (200, 108, 212, '2023-11-17 05:10:40', 'failed'),
-    (201, 117, 228, '2023-12-10 08:32:02', 'failed'),
-    (202, 110, 210, '2023-11-15 08:14:25', 'confirmed'),
-    (203, 106, 215, '2023-11-11 20:30:01', 'confirmed'),
-    (204, 113, 210, '2023-10-29 20:44:42', 'confirmed'),
-    (205, 107, 217, '2023-10-18 23:59:17', 'failed'),
-    (206, 102, 201, '2023-10-05 14:29:34', 'confirmed'),
-    (207, 115, 227, '2023-12-10 20:39:47', 'failed'),
-    (208, 105, 223, '2023-12-12 14:23:59', 'confirmed'),
-    (209, 101, 217, '2023-10-31 17:15:39', 'confirmed'),
-    (210, 101, 204, '2023-10-30 21:57:53', 'confirmed'),
-    (211, 117, 201, '2023-12-27 07:44:57', 'confirmed'),
-    (212, 101, 213, '2023-10-21 15:39:54', 'failed'),
-    (213, 118, 209, '2023-12-13 07:33:10', 'failed'),
-    (214, 101, 214, '2023-12-27 01:53:20', 'confirmed'),
-    (215, 106, 223, '2023-12-07 03:28:38', 'confirmed'),
-    (216, 102, 207, '2023-10-20 19:59:46', 'confirmed'),
-    (217, 118, 227, '2023-12-02 15:21:08', 'failed'),
-    (218, 113, 209, '2023-11-18 20:19:52', 'failed'),
-    (219, 110, 219, '2023-11-24 06:08:57', 'failed'),
-    (220, 102, 203, '2023-11-14 14:55:30', 'confirmed'),
-    (221, 118, 214, '2023-11-05 22:11:59', 'failed'),
-    (222, 118, 223, '2023-11-27 15:12:02', 'confirmed'),
-    (223, 114, 207, '2023-11-09 20:57:05', 'confirmed'),
-    (224, 104, 211, '2023-12-30 07:35:01', 'failed'),
-    (225, 102, 226, '2023-12-19 01:26:47', 'confirmed'),
-    (226, 104, 200, '2023-10-17 10:11:06', 'failed'),
-    (227, 109, 202, '2023-11-28 22:38:45', 'confirmed'),
-    (228, 106, 224, '2023-12-11 23:47:37', 'failed'),
-    (229, 112, 222, '2023-10-13 06:08:22', 'confirmed');
+    (200, 108, 212, '2023-12-21 04:42:17', '2023-12-21 06:14:17', 'failed'),
+    (201, 117, 228,  '2023-10-09 17:09:34', '2023-10-09 18:43:34', 'failed'),
+    (202, 110, 210,  '2023-10-28 16:40:40', '2023-10-28 18:40:40', 'confirmed'),
+    (203, 106, 215, '2023-10-19 18:15:18', '2023-10-19 19:41:18', 'confirmed'),
+    (204, 113, 210,  '2023-10-06 20:06:58', '2023-10-06 22:32:58', 'confirmed'),
+    (205, 107, 217,  '2023-12-06 14:57:54', '2023-12-06 17:17:54', 'failed'),
+    (206, 102, 201, '2023-10-19 18:17:45', '2023-10-19 20:39:45', 'confirmed'),
+    (207, 115, 227, '2023-10-21 21:45:15', '2023-10-21 23:49:15', 'failed'),
+    (208, 105, 223,  '2023-12-22 17:54:45', '2023-12-22 18:36:45', 'confirmed'),
+    (209, 101, 217, '2023-10-26 15:09:01', '2023-10-26 17:21:01', 'confirmed'),
+    (210, 101, 204, '2023-10-08 09:14:31', '2023-10-08 11:13:31', 'confirmed'),
+    (211, 117, 201, '2023-12-03 01:22:22', '2023-12-03 03:08:22', 'confirmed'),
+    (212, 101, 213, '2023-11-15 23:55:14', '2023-11-16 00:38:14', 'failed'),
+    (213, 118, 209, '2023-10-24 07:38:07', '2023-10-24 08:51:07', 'failed'),
+    (214, 101, 214, '2023-10-11 13:15:17', '2023-10-11 14:33:17',  'confirmed'),
+    (215, 106, 223, '2023-10-24 12:50:28', '2023-10-24 15:35:28' , 'confirmed'),
+    (216, 102, 207, '2023-11-27 04:09:01', '2023-11-27 07:01:01', 'confirmed'),
+    (217, 118, 227,  '2023-12-02 04:33:20', '2023-12-02 05:49:20', 'failed'),
+    (218, 113, 209, '2023-10-07 04:13:46', '2023-10-07 06:07:46', 'failed'),
+    (219, 110, 219, '2023-11-17 18:28:43', '2023-11-17 21:03:43', 'failed'),
+    (220, 102, 203, '2023-12-11 03:53:32', '2023-12-11 06:51:32', 'confirmed'),
+    (221, 118, 214,  '2023-10-07 14:54:18', '2023-10-07 16:13:18', 'failed'),
+    (222, 118, 223, '2023-11-26 09:58:12', '2023-11-26 12:01:12', 'confirmed'),
+    (223, 114, 207,  '2023-11-09 22:54:01', '2023-11-10 00:27:01', 'confirmed'),
+    (224, 104, 211,  '2023-11-17 13:17:24', '2023-11-17 15:43:24', 'failed'),
+    (225, 102, 226, '2023-11-11 05:14:43', '2023-11-11 07:11:43', 'confirmed'),
+    (226, 104, 200, '2023-11-14 13:03:51', '2023-11-14 14:59:51', 'failed'),
+    (227, 109, 202, '2023-10-16 22:43:29', '2023-10-17 01:10:29', 'confirmed'),
+    (228, 106, 224, '2023-12-12 22:49:54', '2023-12-12 23:21:54', 'failed'),
+    (229, 112, 222, '2023-12-01 15:03:46', '2023-12-01 16:43:46', 'confirmed');
 
 insert into
     vehicle (vehicle_id, cust_id, plate_number, vehicle_type)
